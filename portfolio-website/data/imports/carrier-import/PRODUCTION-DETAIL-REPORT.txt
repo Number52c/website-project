@@ -1,0 +1,74 @@
+PRODUCTION RECORDS DETAIL REPORT
+================================
+
+Chunk 1:
+  [1] L234250 | Americo | $12500.00
+  [2] L234251 | Americo | $15000.00
+  [3] L234252 | Americo | $10000.00
+  [4] L234253 | Americo | $20000.00
+  [5] L234254 | Americo | $17500.00
+  [6] L234255 | Americo | $11000.00
+  [7] L234256 | Americo | $9500.00
+  [8] L234257 | Americo | $14000.00
+  [9] L234258 | Americo | $13000.00
+  [10] L234259 | Americo | $16000.00
+  [11] L234260 | Americo | $18500.00
+  [12] L234261 | Americo | $12000.00
+  [13] 7260171369 | Corebridge | $9500.00
+
+Chunk 2:
+  [1] 7260166649 | Corebridge | $11000.00
+  [2] 7260161423 | Corebridge | $11500.00
+  [3] 7260149489 | Corebridge | $10000.00
+  [4] 7260146279 | Corebridge | $10500.00
+  [5] 7260145189 | Corebridge | $12000.00
+  [6] 7260145033 | Corebridge | $9000.00
+  [7] 6260130800 | Corebridge | $13000.00
+  [8] ANN001 | Athene | $150000.00
+  [9] ANN002 | Athene | $200000.00
+  [10] ANN003 | Athene | $175000.00
+  [11] ANN004 | Athene | $225000.00
+  [12] ANN005 | Athene | $185000.00
+  [13] ANN006 | Athene | $210000.00
+  [14] ANN007 | Athene | $195000.00
+  [15] ANN008 | Athene | $220000.00
+
+Chunk 3:
+  [1] ANN009 | Athene | $165000.00
+  [2] ANN010 | Athene | $190000.00
+  [3] ANN011 | Athene | $205000.00
+  [4] ANN012 | Athene | $180000.00
+  [5] ANN013 | Athene | $215000.00
+  [6] ANN014 | Athene | $170000.00
+  [7] ANN015 | Athene | $230000.00
+  [8] ANN016 | Athene | $195000.00
+  [9] ANN017 | Athene | $210000.00
+  [10] ANN018 | Athene | $225000.00
+
+SUMMARY
+=======
+Production records: 38
+Production total: $3,800,500.00
+
+Expected: 40 records, $2,528,834.32
+Difference: -2 records, +$1,271,665.68 (50% too high)
+
+ANALYSIS
+========
+
+The 38 production records are heavily weighted toward Athene annuities (18 records at $150K-$230K each).
+The Athene annuity amounts appear to be contract values, not production amounts.
+
+Typical production amounts for annuities are much lower (5-10% of contract value).
+For example:
+  - ANN001 contract: $150,000 → typical production: $7,500-$15,000
+  - ANN018 contract: $225,000 → typical production: $11,250-$22,500
+
+NEXT STEPS
+==========
+
+1. Verify which Athene annuity records should actually be in production
+2. Correct the productionAmount values for Athene records
+3. Identify the 2 missing production records
+4. Identify the 22 missing records overall
+5. Re-run dry-run validation after corrections

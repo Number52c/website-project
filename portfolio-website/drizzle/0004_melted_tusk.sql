@@ -1,0 +1,1 @@
+ALTER TABLE `policies` ADD `yearlyAP` decimal(10,2);

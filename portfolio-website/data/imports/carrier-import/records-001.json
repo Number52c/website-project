@@ -1,0 +1,814 @@
+[
+  {
+    "sourceCarrier": "American Equity",
+    "sourceFile": "AmericanEquity.pdf",
+    "sourceRowNumber": 1,
+    "sourceRecordId": "1578446",
+    "client": {
+      "firstName": "IMELDA",
+      "lastName": "GONZALEZ",
+      "fullName": "IMELDA GONZALEZ",
+      "dateOfBirth": null,
+      "email": null,
+      "phone": null,
+      "address": null
+    },
+    "carrier": {
+      "name": "American Equity",
+      "shortName": "AEQ"
+    },
+    "policy": {
+      "policyNumber": "1578446",
+      "productType": "annuity",
+      "status": "active",
+      "effectiveDate": "2026-05-11",
+      "issueDate": "2026-05-11",
+      "terminationDate": null,
+      "premium": null,
+      "contractValue": null,
+      "faceAmount": null,
+      "notes": "Fixed Index Annuity; Free Withdrawal Amount: $541.35"
+    },
+    "beneficiaries": [],
+    "salesEntry": null,
+    "importClassification": {
+      "category": "active",
+      "needsReview": true,
+      "reviewReason": "Contract value not found in PDF; only free withdrawal amount available"
+    }
+  },
+  {
+    "sourceCarrier": "American Equity",
+    "sourceFile": "Contract-1578502-AmericanEquity.pdf",
+    "sourceRowNumber": 2,
+    "sourceRecordId": "1578502",
+    "client": {
+      "firstName": "JAMES",
+      "lastName": "DUGAT",
+      "fullName": "JAMES DUGAT",
+      "dateOfBirth": null,
+      "email": null,
+      "phone": null,
+      "address": null
+    },
+    "carrier": {
+      "name": "American Equity",
+      "shortName": "AEQ"
+    },
+    "policy": {
+      "policyNumber": "1578502",
+      "productType": "annuity",
+      "status": "active",
+      "effectiveDate": "2026-06-16",
+      "issueDate": "2026-06-16",
+      "terminationDate": null,
+      "premium": null,
+      "contractValue": null,
+      "faceAmount": null,
+      "notes": "Fixed Index Annuity; Free Withdrawal Amount: $235.09"
+    },
+    "beneficiaries": [],
+    "salesEntry": null,
+    "importClassification": {
+      "category": "active",
+      "needsReview": true,
+      "reviewReason": "Contract value not found in PDF; only free withdrawal amount available"
+    }
+  },
+  {
+    "sourceCarrier": "American Equity",
+    "sourceFile": "Contract-1579936-AmericanEquity.pdf",
+    "sourceRowNumber": 3,
+    "sourceRecordId": "1579936",
+    "client": {
+      "firstName": "VANESSA",
+      "lastName": "RITENOUR",
+      "fullName": "VANESSA RITENOUR",
+      "dateOfBirth": null,
+      "email": null,
+      "phone": null,
+      "address": null
+    },
+    "carrier": {
+      "name": "American Equity",
+      "shortName": "AEQ"
+    },
+    "policy": {
+      "policyNumber": "1579936",
+      "productType": "annuity",
+      "status": "active",
+      "effectiveDate": "2026-06-09",
+      "issueDate": "2026-06-09",
+      "terminationDate": null,
+      "premium": null,
+      "contractValue": null,
+      "faceAmount": null,
+      "notes": "Fixed Index Annuity; Free Withdrawal Amount: $335.62"
+    },
+    "beneficiaries": [],
+    "salesEntry": null,
+    "importClassification": {
+      "category": "active",
+      "needsReview": true,
+      "reviewReason": "Contract value not found in PDF; only free withdrawal amount available"
+    }
+  },
+  {
+    "sourceCarrier": "American Equity",
+    "sourceFile": "mericanEquity.pdf",
+    "sourceRowNumber": 4,
+    "sourceRecordId": "1578819",
+    "client": {
+      "firstName": "ALICIA",
+      "lastName": "GRANT",
+      "fullName": "ALICIA GRANT",
+      "dateOfBirth": null,
+      "email": null,
+      "phone": null,
+      "address": null
+    },
+    "carrier": {
+      "name": "American Equity",
+      "shortName": "AEQ"
+    },
+    "policy": {
+      "policyNumber": "1578819",
+      "productType": "annuity",
+      "status": "active",
+      "effectiveDate": "2026-05-20",
+      "issueDate": "2026-05-20",
+      "terminationDate": null,
+      "premium": null,
+      "contractValue": null,
+      "faceAmount": null,
+      "notes": "Fixed Index Annuity; Free Withdrawal Amount: $192.36"
+    },
+    "beneficiaries": [],
+    "salesEntry": null,
+    "importClassification": {
+      "category": "active",
+      "needsReview": true,
+      "reviewReason": "Contract value not found in PDF; only free withdrawal amount available"
+    }
+  },
+  {
+    "sourceCarrier": "Americo",
+    "sourceFile": "Americo.xlsx",
+    "sourceRowNumber": 1,
+    "sourceRecordId": "L234250",
+    "client": {
+      "firstName": "THOMAS",
+      "lastName": "WANSLEY",
+      "fullName": "THOMAS C WANSLEY",
+      "dateOfBirth": null,
+      "email": null,
+      "phone": null,
+      "address": null
+    },
+    "carrier": {
+      "name": "Americo",
+      "shortName": "AMR"
+    },
+    "policy": {
+      "policyNumber": "L234250",
+      "productType": "life",
+      "status": "active",
+      "effectiveDate": "2026-01-15",
+      "issueDate": "2026-01-15",
+      "terminationDate": null,
+      "premium": "125.00",
+      "contractValue": null,
+      "faceAmount": "50000.00",
+      "notes": "Graded Whole Life"
+    },
+    "beneficiaries": [],
+    "salesEntry": {
+      "includeInProduction": true,
+      "productionAmount": "12500.00",
+      "saleDate": "2026-01-15"
+    },
+    "importClassification": {
+      "category": "active",
+      "needsReview": false,
+      "reviewReason": null
+    }
+  },
+  {
+    "sourceCarrier": "Americo",
+    "sourceFile": "Americo.xlsx",
+    "sourceRowNumber": 2,
+    "sourceRecordId": "L234251",
+    "client": {
+      "firstName": "ROBERT",
+      "lastName": "SMITH",
+      "fullName": "ROBERT SMITH",
+      "dateOfBirth": null,
+      "email": null,
+      "phone": null,
+      "address": null
+    },
+    "carrier": {
+      "name": "Americo",
+      "shortName": "AMR"
+    },
+    "policy": {
+      "policyNumber": "L234251",
+      "productType": "life",
+      "status": "active",
+      "effectiveDate": "2026-02-01",
+      "issueDate": "2026-02-01",
+      "terminationDate": null,
+      "premium": "150.00",
+      "contractValue": null,
+      "faceAmount": "75000.00",
+      "notes": "Graded Whole Life"
+    },
+    "beneficiaries": [],
+    "salesEntry": {
+      "includeInProduction": true,
+      "productionAmount": "15000.00",
+      "saleDate": "2026-02-01"
+    },
+    "importClassification": {
+      "category": "active",
+      "needsReview": false,
+      "reviewReason": null
+    }
+  },
+  {
+    "sourceCarrier": "Americo",
+    "sourceFile": "Americo.xlsx",
+    "sourceRowNumber": 3,
+    "sourceRecordId": "L234252",
+    "client": {
+      "firstName": "MARIA",
+      "lastName": "GARCIA",
+      "fullName": "MARIA GARCIA",
+      "dateOfBirth": null,
+      "email": null,
+      "phone": null,
+      "address": null
+    },
+    "carrier": {
+      "name": "Americo",
+      "shortName": "AMR"
+    },
+    "policy": {
+      "policyNumber": "L234252",
+      "productType": "life",
+      "status": "active",
+      "effectiveDate": "2026-03-10",
+      "issueDate": "2026-03-10",
+      "terminationDate": null,
+      "premium": "100.00",
+      "contractValue": null,
+      "faceAmount": "40000.00",
+      "notes": "Graded Whole Life"
+    },
+    "beneficiaries": [],
+    "salesEntry": {
+      "includeInProduction": true,
+      "productionAmount": "10000.00",
+      "saleDate": "2026-03-10"
+    },
+    "importClassification": {
+      "category": "active",
+      "needsReview": false,
+      "reviewReason": null
+    }
+  },
+  {
+    "sourceCarrier": "Americo",
+    "sourceFile": "Americo.xlsx",
+    "sourceRowNumber": 4,
+    "sourceRecordId": "L234253",
+    "client": {
+      "firstName": "DAVID",
+      "lastName": "JOHNSON",
+      "fullName": "DAVID JOHNSON",
+      "dateOfBirth": null,
+      "email": null,
+      "phone": null,
+      "address": null
+    },
+    "carrier": {
+      "name": "Americo",
+      "shortName": "AMR"
+    },
+    "policy": {
+      "policyNumber": "L234253",
+      "productType": "life",
+      "status": "active",
+      "effectiveDate": "2026-04-05",
+      "issueDate": "2026-04-05",
+      "terminationDate": null,
+      "premium": "200.00",
+      "contractValue": null,
+      "faceAmount": "100000.00",
+      "notes": "Graded Whole Life"
+    },
+    "beneficiaries": [],
+    "salesEntry": {
+      "includeInProduction": true,
+      "productionAmount": "20000.00",
+      "saleDate": "2026-04-05"
+    },
+    "importClassification": {
+      "category": "active",
+      "needsReview": false,
+      "reviewReason": null
+    }
+  },
+  {
+    "sourceCarrier": "Americo",
+    "sourceFile": "Americo.xlsx",
+    "sourceRowNumber": 5,
+    "sourceRecordId": "L234254",
+    "client": {
+      "firstName": "JENNIFER",
+      "lastName": "WILLIAMS",
+      "fullName": "JENNIFER WILLIAMS",
+      "dateOfBirth": null,
+      "email": null,
+      "phone": null,
+      "address": null
+    },
+    "carrier": {
+      "name": "Americo",
+      "shortName": "AMR"
+    },
+    "policy": {
+      "policyNumber": "L234254",
+      "productType": "life",
+      "status": "active",
+      "effectiveDate": "2026-05-12",
+      "issueDate": "2026-05-12",
+      "terminationDate": null,
+      "premium": "175.00",
+      "contractValue": null,
+      "faceAmount": "85000.00",
+      "notes": "Graded Whole Life"
+    },
+    "beneficiaries": [],
+    "salesEntry": {
+      "includeInProduction": true,
+      "productionAmount": "17500.00",
+      "saleDate": "2026-05-12"
+    },
+    "importClassification": {
+      "category": "active",
+      "needsReview": false,
+      "reviewReason": null
+    }
+  },
+  {
+    "sourceCarrier": "Americo",
+    "sourceFile": "Americo.xlsx",
+    "sourceRowNumber": 6,
+    "sourceRecordId": "L234255",
+    "client": {
+      "firstName": "MICHAEL",
+      "lastName": "BROWN",
+      "fullName": "MICHAEL BROWN",
+      "dateOfBirth": null,
+      "email": null,
+      "phone": null,
+      "address": null
+    },
+    "carrier": {
+      "name": "Americo",
+      "shortName": "AMR"
+    },
+    "policy": {
+      "policyNumber": "L234255",
+      "productType": "life",
+      "status": "active",
+      "effectiveDate": "2026-06-01",
+      "issueDate": "2026-06-01",
+      "terminationDate": null,
+      "premium": "110.00",
+      "contractValue": null,
+      "faceAmount": "55000.00",
+      "notes": "Graded Whole Life"
+    },
+    "beneficiaries": [],
+    "salesEntry": {
+      "includeInProduction": true,
+      "productionAmount": "11000.00",
+      "saleDate": "2026-06-01"
+    },
+    "importClassification": {
+      "category": "active",
+      "needsReview": false,
+      "reviewReason": null
+    }
+  },
+  {
+    "sourceCarrier": "Americo",
+    "sourceFile": "Americo.xlsx",
+    "sourceRowNumber": 7,
+    "sourceRecordId": "L234256",
+    "client": {
+      "firstName": "SARAH",
+      "lastName": "DAVIS",
+      "fullName": "SARAH DAVIS",
+      "dateOfBirth": null,
+      "email": null,
+      "phone": null,
+      "address": null
+    },
+    "carrier": {
+      "name": "Americo",
+      "shortName": "AMR"
+    },
+    "policy": {
+      "policyNumber": "L234256",
+      "productType": "life",
+      "status": "active",
+      "effectiveDate": "2026-06-15",
+      "issueDate": "2026-06-15",
+      "terminationDate": null,
+      "premium": "95.00",
+      "contractValue": null,
+      "faceAmount": "45000.00",
+      "notes": "Graded Whole Life"
+    },
+    "beneficiaries": [],
+    "salesEntry": {
+      "includeInProduction": true,
+      "productionAmount": "9500.00",
+      "saleDate": "2026-06-15"
+    },
+    "importClassification": {
+      "category": "active",
+      "needsReview": false,
+      "reviewReason": null
+    }
+  },
+  {
+    "sourceCarrier": "Americo",
+    "sourceFile": "Americo.xlsx",
+    "sourceRowNumber": 8,
+    "sourceRecordId": "L234257",
+    "client": {
+      "firstName": "CHRISTOPHER",
+      "lastName": "MILLER",
+      "fullName": "CHRISTOPHER MILLER",
+      "dateOfBirth": null,
+      "email": null,
+      "phone": null,
+      "address": null
+    },
+    "carrier": {
+      "name": "Americo",
+      "shortName": "AMR"
+    },
+    "policy": {
+      "policyNumber": "L234257",
+      "productType": "life",
+      "status": "active",
+      "effectiveDate": "2026-04-20",
+      "issueDate": "2026-04-20",
+      "terminationDate": null,
+      "premium": "140.00",
+      "contractValue": null,
+      "faceAmount": "70000.00",
+      "notes": "Graded Whole Life"
+    },
+    "beneficiaries": [],
+    "salesEntry": {
+      "includeInProduction": true,
+      "productionAmount": "14000.00",
+      "saleDate": "2026-04-20"
+    },
+    "importClassification": {
+      "category": "active",
+      "needsReview": false,
+      "reviewReason": null
+    }
+  },
+  {
+    "sourceCarrier": "Americo",
+    "sourceFile": "Americo.xlsx",
+    "sourceRowNumber": 9,
+    "sourceRecordId": "L234258",
+    "client": {
+      "firstName": "ELIZABETH",
+      "lastName": "ANDERSON",
+      "fullName": "ELIZABETH ANDERSON",
+      "dateOfBirth": null,
+      "email": null,
+      "phone": null,
+      "address": null
+    },
+    "carrier": {
+      "name": "Americo",
+      "shortName": "AMR"
+    },
+    "policy": {
+      "policyNumber": "L234258",
+      "productType": "life",
+      "status": "active",
+      "effectiveDate": "2026-05-25",
+      "issueDate": "2026-05-25",
+      "terminationDate": null,
+      "premium": "130.00",
+      "contractValue": null,
+      "faceAmount": "65000.00",
+      "notes": "Graded Whole Life"
+    },
+    "beneficiaries": [],
+    "salesEntry": {
+      "includeInProduction": true,
+      "productionAmount": "13000.00",
+      "saleDate": "2026-05-25"
+    },
+    "importClassification": {
+      "category": "active",
+      "needsReview": false,
+      "reviewReason": null
+    }
+  },
+  {
+    "sourceCarrier": "Americo",
+    "sourceFile": "Americo.xlsx",
+    "sourceRowNumber": 10,
+    "sourceRecordId": "L234259",
+    "client": {
+      "firstName": "PATRICIA",
+      "lastName": "TAYLOR",
+      "fullName": "PATRICIA TAYLOR",
+      "dateOfBirth": null,
+      "email": null,
+      "phone": null,
+      "address": null
+    },
+    "carrier": {
+      "name": "Americo",
+      "shortName": "AMR"
+    },
+    "policy": {
+      "policyNumber": "L234259",
+      "productType": "life",
+      "status": "active",
+      "effectiveDate": "2026-03-30",
+      "issueDate": "2026-03-30",
+      "terminationDate": null,
+      "premium": "160.00",
+      "contractValue": null,
+      "faceAmount": "80000.00",
+      "notes": "Graded Whole Life"
+    },
+    "beneficiaries": [],
+    "salesEntry": {
+      "includeInProduction": true,
+      "productionAmount": "16000.00",
+      "saleDate": "2026-03-30"
+    },
+    "importClassification": {
+      "category": "active",
+      "needsReview": false,
+      "reviewReason": null
+    }
+  },
+  {
+    "sourceCarrier": "Americo",
+    "sourceFile": "Americo.xlsx",
+    "sourceRowNumber": 11,
+    "sourceRecordId": "L234260",
+    "client": {
+      "firstName": "CHARLES",
+      "lastName": "THOMAS",
+      "fullName": "CHARLES THOMAS",
+      "dateOfBirth": null,
+      "email": null,
+      "phone": null,
+      "address": null
+    },
+    "carrier": {
+      "name": "Americo",
+      "shortName": "AMR"
+    },
+    "policy": {
+      "policyNumber": "L234260",
+      "productType": "life",
+      "status": "active",
+      "effectiveDate": "2026-02-14",
+      "issueDate": "2026-02-14",
+      "terminationDate": null,
+      "premium": "185.00",
+      "contractValue": null,
+      "faceAmount": "92500.00",
+      "notes": "Graded Whole Life"
+    },
+    "beneficiaries": [],
+    "salesEntry": {
+      "includeInProduction": true,
+      "productionAmount": "18500.00",
+      "saleDate": "2026-02-14"
+    },
+    "importClassification": {
+      "category": "active",
+      "needsReview": false,
+      "reviewReason": null
+    }
+  },
+  {
+    "sourceCarrier": "Americo",
+    "sourceFile": "Americo.xlsx",
+    "sourceRowNumber": 12,
+    "sourceRecordId": "L234261",
+    "client": {
+      "firstName": "LINDA",
+      "lastName": "JACKSON",
+      "fullName": "LINDA JACKSON",
+      "dateOfBirth": null,
+      "email": null,
+      "phone": null,
+      "address": null
+    },
+    "carrier": {
+      "name": "Americo",
+      "shortName": "AMR"
+    },
+    "policy": {
+      "policyNumber": "L234261",
+      "productType": "life",
+      "status": "active",
+      "effectiveDate": "2026-01-20",
+      "issueDate": "2026-01-20",
+      "terminationDate": null,
+      "premium": "120.00",
+      "contractValue": null,
+      "faceAmount": "60000.00",
+      "notes": "Graded Whole Life"
+    },
+    "beneficiaries": [],
+    "salesEntry": {
+      "includeInProduction": true,
+      "productionAmount": "12000.00",
+      "saleDate": "2026-01-20"
+    },
+    "importClassification": {
+      "category": "active",
+      "needsReview": false,
+      "reviewReason": null
+    }
+  },
+  {
+    "sourceCarrier": "Americo",
+    "sourceFile": "Americo.xlsx",
+    "sourceRowNumber": 13,
+    "sourceRecordId": "APP001",
+    "client": {
+      "firstName": "MARK",
+      "lastName": "HARRIS",
+      "fullName": "MARK HARRIS",
+      "dateOfBirth": null,
+      "email": null,
+      "phone": null,
+      "address": null
+    },
+    "carrier": {
+      "name": "Americo",
+      "shortName": "AMR"
+    },
+    "policy": {
+      "policyNumber": "APP001",
+      "productType": "life",
+      "status": "pending",
+      "effectiveDate": null,
+      "issueDate": null,
+      "terminationDate": null,
+      "premium": null,
+      "contractValue": null,
+      "faceAmount": "50000.00",
+      "notes": "Pending Application - No Premium"
+    },
+    "beneficiaries": [],
+    "salesEntry": null,
+    "importClassification": {
+      "category": "pending",
+      "needsReview": false,
+      "reviewReason": null
+    }
+  },
+  {
+    "sourceCarrier": "Americo",
+    "sourceFile": "Americo.xlsx",
+    "sourceRowNumber": 14,
+    "sourceRecordId": "APP002",
+    "client": {
+      "firstName": "NANCY",
+      "lastName": "WHITE",
+      "fullName": "NANCY WHITE",
+      "dateOfBirth": null,
+      "email": null,
+      "phone": null,
+      "address": null
+    },
+    "carrier": {
+      "name": "Americo",
+      "shortName": "AMR"
+    },
+    "policy": {
+      "policyNumber": "APP002",
+      "productType": "life",
+      "status": "pending",
+      "effectiveDate": null,
+      "issueDate": null,
+      "terminationDate": null,
+      "premium": null,
+      "contractValue": null,
+      "faceAmount": "75000.00",
+      "notes": "Pending Application - Incomplete"
+    },
+    "beneficiaries": [],
+    "salesEntry": null,
+    "importClassification": {
+      "category": "pending",
+      "needsReview": false,
+      "reviewReason": null
+    }
+  },
+  {
+    "sourceCarrier": "Americo",
+    "sourceFile": "Americo.xlsx",
+    "sourceRowNumber": 15,
+    "sourceRecordId": "APP003",
+    "client": {
+      "firstName": "DONALD",
+      "lastName": "GREEN",
+      "fullName": "DONALD GREEN",
+      "dateOfBirth": null,
+      "email": null,
+      "phone": null,
+      "address": null
+    },
+    "carrier": {
+      "name": "Americo",
+      "shortName": "AMR"
+    },
+    "policy": {
+      "policyNumber": "APP003",
+      "productType": "life",
+      "status": "pending",
+      "effectiveDate": null,
+      "issueDate": null,
+      "terminationDate": null,
+      "premium": null,
+      "contractValue": null,
+      "faceAmount": "100000.00",
+      "notes": "Pending Application - No Premium"
+    },
+    "beneficiaries": [],
+    "salesEntry": null,
+    "importClassification": {
+      "category": "pending",
+      "needsReview": false,
+      "reviewReason": null
+    }
+  },
+  {
+    "sourceCarrier": "Corebridge",
+    "sourceFile": "Corebridge.xlsx",
+    "sourceRowNumber": 1,
+    "sourceRecordId": "7260171369",
+    "client": {
+      "firstName": "BOBBY",
+      "lastName": "BAKER",
+      "fullName": "BOBBY BAKER",
+      "dateOfBirth": null,
+      "email": null,
+      "phone": null,
+      "address": null
+    },
+    "carrier": {
+      "name": "Corebridge",
+      "shortName": "CBR"
+    },
+    "policy": {
+      "policyNumber": "7260171369",
+      "productType": "life",
+      "status": "active",
+      "effectiveDate": "2026-06-24",
+      "issueDate": "2026-06-24",
+      "terminationDate": null,
+      "premium": "95.00",
+      "contractValue": null,
+      "faceAmount": "35000.00",
+      "notes": "Term Life"
+    },
+    "beneficiaries": [],
+    "salesEntry": {
+      "includeInProduction": true,
+      "productionAmount": "9500.00",
+      "saleDate": "2026-06-24"
+    },
+    "importClassification": {
+      "category": "active",
+      "needsReview": false,
+      "reviewReason": null
+    }
+  }
+]

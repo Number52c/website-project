@@ -1,0 +1,1 @@
+ALTER TABLE `annuities` RENAME COLUMN `guaranteedRate` TO `commissionPercent`;

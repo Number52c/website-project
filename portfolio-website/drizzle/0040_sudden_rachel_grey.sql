@@ -1,0 +1,1 @@
+ALTER TABLE `sales_entries` ADD `agent` varchar(255);

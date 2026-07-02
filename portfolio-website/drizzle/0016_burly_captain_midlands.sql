@@ -1,0 +1,1 @@
+ALTER TABLE `sales_entries` ADD `commissionOverride` decimal(5,2);

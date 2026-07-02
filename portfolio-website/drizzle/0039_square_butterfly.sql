@@ -1,0 +1,1 @@
+ALTER TABLE `sales_entries` ADD `tagColor` varchar(50) DEFAULT 'default';
