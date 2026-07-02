@@ -1,0 +1,1 @@
+ALTER TABLE `clients` MODIFY COLUMN `pin` varchar(255) NOT NULL;

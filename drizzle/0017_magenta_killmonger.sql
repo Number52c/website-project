@@ -1,0 +1,1 @@
+ALTER TABLE `sales_entries` ADD `isPaid` tinyint DEFAULT 0 NOT NULL;

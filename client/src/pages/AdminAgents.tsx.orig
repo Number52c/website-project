@@ -1,0 +1,816 @@
+import { useState } from "react";
+import { trpc } from "@/lib/trpc";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { UserPlus, Trash2, Edit, Loader2, Copy, CheckCircle, RefreshCw, Send, ChevronDown } from "lucide-react";
+import { toast } from "sonner";
+import { AgentKPICard } from "@/components/AgentKPICard";
+
+export function AdminAgents() {
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedAgentForKPI, setSelectedAgentForKPI] = useState<string | null>(null);
+  const [expandedAgentId, setExpandedAgentId] = useState<number | null>(null);
+  const [showCreateDialog, setShowCreateDialog] = useState(false);
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+  const [showEditDialog, setShowEditDialog] = useState(false);
+  const [selectedAgent, setSelectedAgent] = useState<any>(null);
+  const [copiedPassword, setCopiedPassword] = useState<string | null>(null);
+  const [showWelcomeTextModal, setShowWelcomeTextModal] = useState(false);
+  const [welcomeTextContent, setWelcomeTextContent] = useState("");
+  const [copiedWelcomeText, setCopiedWelcomeText] = useState(false);
+  const [lastCreatedAgentPassword, setLastCreatedAgentPassword] = useState<string | null>(null);
+
+  // Edit form state
+  const [editFormData, setEditFormData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    phone: "",
+    licenseNumber: "",
+    licenseState: "",
+  });
+
+  // Form state for creating new agent
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    phone: "",
+    licenseNumber: "",
+    licenseState: "TX",
+    status: "active",
+  });
+
+  // Fetch all agents
+  const { data: agents = [], isLoading, refetch } = trpc.admin.listAgents.useQuery();
+  const { data: onboardingProgress } = trpc.admin.getAgentOnboardingProgress.useQuery();
+  const utils = trpc.useUtils();
+
+  const getProgressPercentage = (agentId: number) => {
+    const progress = onboardingProgress?.find(p => p.agentId === agentId);
+    if (!progress) return 0;
+    const completed = [
+      progress.beforeYouStartCompleted,
+      progress.step1HcmsInviteSent,
+      progress.step2EmailSequenceCompleted,
+      progress.step2SureLcCompleted,
+      progress.step3NlcContractsSubmitted,
+      progress.step4AdditionalContractsSent,
+    ].filter(v => v === 1).length;
+    return Math.round((completed / 6) * 100);
+  };
+
+  const getStatus = (agentId: number) => {
+    const progress = onboardingProgress?.find(p => p.agentId === agentId);
+    if (!progress) return "Not Started";
+    if (progress.onboardingCompleted === 1) return "Completed";
+    const percentage = getProgressPercentage(agentId);
+    if (percentage === 0) return "Not Started";
+    if (percentage === 100) return "Completed";
+    return "In Progress";
+  };
+
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case "Completed":
+        return "bg-green-500/20 text-green-400 border-green-500/30";
+      case "In Progress":
+        return "bg-blue-500/20 text-blue-400 border-blue-500/30";
+      default:
+        return "bg-gray-500/20 text-gray-400 border-gray-500/30";
+    }
+  };
+
+  // Create agent mutation
+  const createAgentMutation = trpc.admin.createAgent.useMutation({
+    onSuccess: (result: any) => {
+      setLastCreatedAgentPassword(result.tempPassword);
+      const welcomeText = result.welcomeText || '';
+      setWelcomeTextContent(welcomeText);
+      setShowWelcomeTextModal(true);
+      setCopiedWelcomeText(false);
+      toast.success("Agent created! Welcome text is ready to share.");
+      setShowCreateDialog(false);
+      setFormData({
+        firstName: "",
+        lastName: "",
+        email: "",
+        phone: "",
+        licenseNumber: "",
+        licenseState: "TX",
+        status: "active",
+      });
+      refetch();
+    },
+    onError: (err: any) => {
+      toast.error(err.message || "Failed to create agent");
+    },
+  });
+
+  // Clear database mutation
+  const clearDatabaseMutation = trpc.admin.clearDatabase.useMutation({
+    onSuccess: () => {
+      toast.success("Database cleared successfully! Only Nathan and Mauri remain.");
+      refetch();
+    },
+    onError: (err: any) => {
+      toast.error(err.message || "Failed to clear database");
+    },
+  });
+
+  // Update agent mutation
+  const updateAgentMutation = trpc.admin.updateAgent.useMutation({
+    onSuccess: () => {
+      toast.success("Agent updated successfully!");
+      setShowEditDialog(false);
+      utils.admin.listAgents.invalidate();
+    },
+    onError: (err: any) => {
+      toast.error(err.message || "Failed to update agent");
+    },
+  });
+
+  // Reset password mutation
+  const resetPasswordMutation = trpc.admin.resetAgentPassword.useMutation({
+    onSuccess: (result: any) => {
+      const agent = selectedAgent;
+      if (!agent) return;
+      // Build welcome text with new temp password
+      const welcomeText = buildWelcomeText(agent, result.tempPassword);
+      setWelcomeTextContent(welcomeText);
+      setShowWelcomeTextModal(true);
+      setCopiedWelcomeText(false);
+      toast.success("Password reset! New welcome text is ready to send.");
+    },
+    onError: (err: any) => {
+      toast.error(err.message || "Failed to reset password");
+    },
+  });
+
+  // Delete agent mutation
+  const deleteAgentMutation = trpc.admin.deleteAgent.useMutation({
+    onSuccess: () => {
+      toast.success("Agent deleted successfully");
+      setShowDeleteDialog(false);
+      setSelectedAgent(null);
+      refetch();
+    },
+    onError: (err: any) => {
+      toast.error(err.message || "Failed to delete agent");
+    },
+  });
+
+  // Update agent status mutation
+  const updateAgentStatusMutation = trpc.admin.updateAgentStatus.useMutation({
+    onSuccess: () => {
+      toast.success("Agent status updated");
+      refetch();
+    },
+    onError: (err: any) => {
+      toast.error(err.message || "Failed to update agent status");
+    },
+  });
+
+  const handleCreateAgent = () => {
+    if (!formData.firstName || !formData.lastName || !formData.email) {
+      toast.error("Please fill in all required fields");
+      return;
+    }
+    createAgentMutation.mutate({
+      firstName: formData.firstName,
+      lastName: formData.lastName,
+      email: formData.email,
+      phone: formData.phone,
+      licenseNumber: formData.licenseNumber,
+      licenseState: formData.licenseState,
+      status: formData.status as "active" | "inactive",
+    });
+  };
+
+  const handleOpenEdit = (agent: any) => {
+    setSelectedAgent(agent);
+    setEditFormData({
+      firstName: agent.firstName || "",
+      lastName: agent.lastName || "",
+      email: agent.email || "",
+      phone: agent.phone || "",
+      licenseNumber: agent.licenseNumber || "",
+      licenseState: agent.licenseState || "",
+    });
+    setShowEditDialog(true);
+  };
+
+  const handleSaveEdit = () => {
+    if (!selectedAgent) return;
+    if (!editFormData.firstName || !editFormData.lastName || !editFormData.email) {
+      toast.error("First name, last name, and email are required");
+      return;
+    }
+    updateAgentMutation.mutate({
+      agentId: selectedAgent.id,
+      firstName: editFormData.firstName,
+      lastName: editFormData.lastName,
+      email: editFormData.email,
+      phone: editFormData.phone,
+      licenseNumber: editFormData.licenseNumber,
+      licenseState: editFormData.licenseState,
+    });
+  };
+
+  const handleResetAndResend = () => {
+    if (!selectedAgent) return;
+    resetPasswordMutation.mutate({ agentId: selectedAgent.id });
+  };
+
+  const handleDeleteAgent = () => {
+    if (!selectedAgent) return;
+    deleteAgentMutation.mutate({ agentId: selectedAgent.id });
+  };
+
+  const handleStatusChange = (agentId: number, newStatus: string) => {
+    updateAgentStatusMutation.mutate({
+      agentId,
+      status: newStatus as "active" | "inactive",
+    });
+  };
+
+  const buildWelcomeText = (agent: any, tempPassword?: string | null) => {
+    const portalUrl = "https://www.ortizinsurancebroker.com/agent/login";
+    const passwordLine = tempPassword ? `Temporary Password: ${tempPassword}\n` : '';
+    return `WELCOME TO ORTIZ INSURANCE AGENT PORTAL
+${'='.repeat(50)}
+
+Agent Name: ${agent.firstName} ${agent.lastName}
+Email: ${agent.email}
+${passwordLine}
+PORTAL ACCESS INSTRUCTIONS
+${'─'.repeat(50)}
+
+1. Go to: ${portalUrl}
+2. Click "Agent Login"
+3. Enter your email: ${agent.email}
+${tempPassword
+  ? `4. Enter your temporary password: ${tempPassword}\n5. You will be prompted to change your password on first login`
+  : '4. You will be prompted to change your password on first login'}
+
+PORTAL FEATURES
+${'─'.repeat(50)}
+
+• Analytics Dashboard - View your sales and commission data
+• Sales Tracker - Log and manage your sales entries
+• Client Management - Create and manage your clients
+• Policy Management - View all policies you've sold
+• Annuities - Track annuity products
+
+SECURITY NOTES
+${'─'.repeat(50)}
+
+• Change your password immediately after first login
+• Do not share your password with anyone
+• Log out when finished using the portal
+• Contact admin if you forget your password
+
+QUESTIONS?
+${'─'.repeat(50)}
+
+Contact the admin for assistance with your account.
+
+${'='.repeat(50)}`;
+  };
+
+  const handleCopyWelcomeText = (agent: any) => {
+    const welcomeText = buildWelcomeText(agent);
+    navigator.clipboard.writeText(welcomeText);
+    toast.success("Welcome text copied to clipboard!");
+  };
+
+  const handleShowWelcomeText = (agent: any) => {
+    const welcomeText = buildWelcomeText(agent);
+    setWelcomeTextContent(welcomeText);
+    setShowWelcomeTextModal(true);
+    setCopiedWelcomeText(false);
+  };
+
+  const handleCopyWelcomeTextFromModal = () => {
+    navigator.clipboard.writeText(welcomeTextContent);
+    setCopiedWelcomeText(true);
+    toast.success("Welcome text copied to clipboard!");
+    setTimeout(() => setCopiedWelcomeText(false), 2000);
+  };
+
+  const filteredAgents = agents.filter(
+    (agent) =>
+      agent.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      agent.lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      agent.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      agent.licenseNumber?.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  return (
+    <div className="space-y-6">
+      {/* Header */}
+      <div className="flex items-center justify-between">
+        <div>
+          <h2 className="text-2xl font-bold text-white">Agent Management</h2>
+          <p className="text-slate-400 text-sm mt-1">Create and manage insurance agents</p>
+        </div>
+        <div className="flex gap-2">
+          <Button
+            onClick={() => {
+              if (window.confirm("Are you sure? This will delete ALL clients, policies, and all agents except Nathan Faughn and Mauri Givens.")) {
+                clearDatabaseMutation.mutate();
+              }
+            }}
+            className="gap-2 bg-red-600 hover:bg-red-700"
+            disabled={clearDatabaseMutation.isPending}
+          >
+            {clearDatabaseMutation.isPending ? (
+              <Loader2 className="w-4 h-4 animate-spin" />
+            ) : (
+              <Trash2 className="w-4 h-4" />
+            )}
+            Clear Database
+          </Button>
+          <Button
+            onClick={() => setShowCreateDialog(true)}
+            className="gap-2 bg-blue-600 hover:bg-blue-700"
+          >
+            <UserPlus className="w-4 h-4" />
+            Create Agent
+          </Button>
+        </div>
+      </div>
+
+      {/* Search */}
+      <div className="relative">
+        <Input
+          placeholder="Search by name, email, or license number..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="bg-slate-700 border-slate-600 text-white placeholder-slate-400"
+        />
+      </div>
+
+      {/* Agents List */}
+      <Card className="bg-slate-800 border-slate-700">
+        <CardHeader>
+          <CardTitle className="text-white">Agents ({filteredAgents.length})</CardTitle>
+          <CardDescription>Active and inactive agents in the system</CardDescription>
+        </CardHeader>
+        <CardContent>
+          {isLoading ? (
+            <div className="flex items-center justify-center py-8">
+              <Loader2 className="w-5 h-5 animate-spin text-slate-400" />
+            </div>
+          ) : filteredAgents.length === 0 ? (
+            <div className="text-center py-8 text-slate-400">
+              <p>No agents found</p>
+            </div>
+          ) : (
+            <div className="space-y-3">
+              {filteredAgents.map((agent) => (
+                <div
+                  key={agent.id}
+                  className="bg-slate-700 p-4 rounded-lg border border-slate-600 flex items-start justify-between"
+                >
+                  <div className="flex-1">
+                    <div className="flex items-center gap-3 mb-2">
+                      <h3 className="font-semibold text-white">
+                        {agent.firstName} {agent.lastName}
+                      </h3>
+                      <Badge className={agent.status === "active" ? "bg-green-600 text-white hover:bg-green-700" : "bg-slate-600 text-white hover:bg-slate-700"}>
+                        {agent.status}
+                      </Badge>
+                    </div>
+                    <div className="grid grid-cols-2 gap-4 text-sm text-slate-300">
+                      <div>
+                        <p className="text-slate-400">Email</p>
+                        <p>{agent.email}</p>
+                      </div>
+                      <div>
+                        <p className="text-slate-400">License</p>
+                        <p>
+                          {agent.licenseNumber} ({agent.licenseState})
+                        </p>
+                      </div>
+                      {agent.phone && (
+                        <div>
+                          <p className="text-slate-400">Phone</p>
+                          <p>{agent.phone}</p>
+                        </div>
+                      )}
+                      <div>
+                        <p className="text-slate-400">Created</p>
+                        <p>{new Date(agent.createdAt).toLocaleDateString()}</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex gap-2 flex-wrap justify-end">
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => handleCopyWelcomeText(agent)}
+                      className="text-amber-400 hover:text-amber-300 hover:bg-amber-900/20 gap-1"
+                      title="Copy welcome text"
+                    >
+                      <Copy className="w-4 h-4" />
+                      <span className="text-xs">Copy</span>
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => handleShowWelcomeText(agent)}
+                      className="text-blue-400 hover:text-blue-300 hover:bg-blue-900/20 gap-1"
+                      title="View welcome text"
+                    >
+                      <span className="text-xs">📋 View</span>
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => handleOpenEdit(agent)}
+                      className="text-emerald-400 hover:text-emerald-300 hover:bg-emerald-900/20 gap-1"
+                      title="Edit agent"
+                    >
+                      <Edit className="w-4 h-4" />
+                      <span className="text-xs">Edit</span>
+                    </Button>
+                    <Select
+                      value={agent.status}
+                      onValueChange={(value) => handleStatusChange(agent.id, value)}
+                    >
+                      <SelectTrigger className="w-24 bg-slate-600 border-slate-500 text-white text-xs">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="active">Active</SelectItem>
+                        <SelectItem value="inactive">Inactive</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => {
+                        setSelectedAgent(agent);
+                        resetPasswordMutation.mutate({ agentId: agent.id });
+                      }}
+                      className="text-orange-400 hover:text-orange-300 hover:bg-orange-900/20 gap-1"
+                      title="Generate new password"
+                    >
+                      <RefreshCw className="w-4 h-4" />
+                      <span className="text-xs">Reset Pwd</span>
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => {
+                        setSelectedAgent(agent);
+                        setShowDeleteDialog(true);
+                      }}
+                      className="text-red-400 hover:text-red-300 hover:bg-red-900/20"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </Button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </CardContent>
+      </Card>
+
+      {/* Edit Agent Dialog */}
+      <Dialog open={showEditDialog} onOpenChange={setShowEditDialog}>
+        <DialogContent className="bg-slate-800 border-slate-700 text-white max-w-lg">
+          <DialogHeader>
+            <DialogTitle className="text-white">Edit Agent</DialogTitle>
+            <DialogDescription className="text-slate-400">
+              Update agent information. Use "Reset Password & Resend" to generate a new temporary password and get a fresh welcome text to send.
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="space-y-4 py-2">
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="text-sm font-medium text-slate-300 mb-1 block">First Name *</label>
+                <Input
+                  value={editFormData.firstName}
+                  onChange={(e) => setEditFormData({ ...editFormData, firstName: e.target.value })}
+                  className="bg-slate-700 border-slate-600 text-white"
+                />
+              </div>
+              <div>
+                <label className="text-sm font-medium text-slate-300 mb-1 block">Last Name *</label>
+                <Input
+                  value={editFormData.lastName}
+                  onChange={(e) => setEditFormData({ ...editFormData, lastName: e.target.value })}
+                  className="bg-slate-700 border-slate-600 text-white"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label className="text-sm font-medium text-slate-300 mb-1 block">Email *</label>
+              <Input
+                type="email"
+                value={editFormData.email}
+                onChange={(e) => setEditFormData({ ...editFormData, email: e.target.value })}
+                className="bg-slate-700 border-slate-600 text-white"
+              />
+            </div>
+
+            <div>
+              <label className="text-sm font-medium text-slate-300 mb-1 block">Phone</label>
+              <Input
+                value={editFormData.phone}
+                onChange={(e) => setEditFormData({ ...editFormData, phone: e.target.value })}
+                className="bg-slate-700 border-slate-600 text-white"
+              />
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="text-sm font-medium text-slate-300 mb-1 block">License Number</label>
+                <Input
+                  value={editFormData.licenseNumber}
+                  onChange={(e) => setEditFormData({ ...editFormData, licenseNumber: e.target.value })}
+                  className="bg-slate-700 border-slate-600 text-white"
+                />
+              </div>
+              <div>
+                <label className="text-sm font-medium text-slate-300 mb-1 block">License State</label>
+                <Input
+                  value={editFormData.licenseState}
+                  onChange={(e) => setEditFormData({ ...editFormData, licenseState: e.target.value })}
+                  maxLength={2}
+                  className="bg-slate-700 border-slate-600 text-white"
+                />
+              </div>
+            </div>
+
+            {/* Reset Password & Resend section */}
+            <div className="border border-slate-600 rounded-lg p-3 bg-slate-900/50">
+              <p className="text-sm text-slate-300 font-medium mb-1">Reset Password</p>
+              <p className="text-xs text-slate-400 mb-3">
+                Generates a new temporary password and opens a welcome text you can copy and send to the agent.
+              </p>
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={handleResetAndResend}
+                disabled={resetPasswordMutation.isPending}
+                className="border-amber-500/50 text-amber-400 hover:bg-amber-900/20 hover:text-amber-300 gap-2"
+              >
+                {resetPasswordMutation.isPending ? (
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                ) : (
+                  <RefreshCw className="w-4 h-4" />
+                )}
+                {resetPasswordMutation.isPending ? "Resetting..." : "Reset Password & Resend Welcome Text"}
+              </Button>
+            </div>
+          </div>
+
+          <DialogFooter>
+            <Button
+              variant="outline"
+              onClick={() => setShowEditDialog(false)}
+              className="border-slate-600 text-slate-300 hover:bg-slate-700"
+            >
+              Cancel
+            </Button>
+            <Button
+              onClick={handleSaveEdit}
+              disabled={updateAgentMutation.isPending}
+              className="bg-emerald-600 hover:bg-emerald-700 gap-2"
+            >
+              {updateAgentMutation.isPending ? (
+                <><Loader2 className="w-4 h-4 animate-spin" /> Saving...</>
+              ) : (
+                "Save Changes"
+              )}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Create Agent Dialog */}
+      <Dialog open={showCreateDialog} onOpenChange={setShowCreateDialog}>
+        <DialogContent className="bg-slate-800 border-slate-700 text-white">
+          <DialogHeader>
+            <DialogTitle>Create New Agent</DialogTitle>
+            <DialogDescription>Add a new insurance agent to the system</DialogDescription>
+          </DialogHeader>
+
+          <div className="space-y-4">
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="text-sm font-medium text-slate-300 mb-1 block">
+                  First Name *
+                </label>
+                <Input
+                  value={formData.firstName}
+                  onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
+                  placeholder="John"
+                  className="bg-slate-700 border-slate-600 text-white"
+                />
+              </div>
+              <div>
+                <label className="text-sm font-medium text-slate-300 mb-1 block">
+                  Last Name *
+                </label>
+                <Input
+                  value={formData.lastName}
+                  onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
+                  placeholder="Doe"
+                  className="bg-slate-700 border-slate-600 text-white"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label className="text-sm font-medium text-slate-300 mb-1 block">Email *</label>
+              <Input
+                type="email"
+                value={formData.email}
+                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                placeholder="john@example.com"
+                className="bg-slate-700 border-slate-600 text-white"
+              />
+            </div>
+
+            <div>
+              <label className="text-sm font-medium text-slate-300 mb-1 block">Phone</label>
+              <Input
+                value={formData.phone}
+                onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                placeholder="555-1234"
+                className="bg-slate-700 border-slate-600 text-white"
+              />
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="text-sm font-medium text-slate-300 mb-1 block">
+                  License Number
+                </label>
+                <Input
+                  value={formData.licenseNumber}
+                  onChange={(e) => setFormData({ ...formData, licenseNumber: e.target.value })}
+                  placeholder="TX123456"
+                  className="bg-slate-700 border-slate-600 text-white"
+                />
+              </div>
+              <div>
+                <label className="text-sm font-medium text-slate-300 mb-1 block">
+                  License State
+                </label>
+                <Input
+                  value={formData.licenseState}
+                  onChange={(e) => setFormData({ ...formData, licenseState: e.target.value })}
+                  placeholder="TX"
+                  maxLength={2}
+                  className="bg-slate-700 border-slate-600 text-white"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label className="text-sm font-medium text-slate-300 mb-1 block">Status</label>
+              <Select value={formData.status} onValueChange={(value) => setFormData({ ...formData, status: value })}>
+                <SelectTrigger className="bg-slate-700 border-slate-600 text-white">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="active">Active</SelectItem>
+                  <SelectItem value="inactive">Inactive</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+
+          <DialogFooter>
+            <Button
+              variant="outline"
+              onClick={() => setShowCreateDialog(false)}
+              className="border-slate-600 text-slate-300 hover:bg-slate-700"
+            >
+              Cancel
+            </Button>
+            <Button
+              onClick={handleCreateAgent}
+              disabled={createAgentMutation.isPending}
+              className="bg-blue-600 hover:bg-blue-700"
+            >
+              {createAgentMutation.isPending ? (
+                <>
+                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                  Creating...
+                </>
+              ) : (
+                "Create Agent"
+              )}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Delete Confirmation Dialog */}
+      <AlertDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
+        <AlertDialogContent className="bg-slate-800 border-slate-700 text-white">
+          <AlertDialogHeader>
+            <AlertDialogTitle>Delete Agent</AlertDialogTitle>
+            <AlertDialogDescription className="text-slate-300">
+              Are you sure you want to delete {selectedAgent?.firstName} {selectedAgent?.lastName}? This action cannot be undone.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel className="border-slate-600 text-slate-300 hover:bg-slate-700">
+              Cancel
+            </AlertDialogCancel>
+            <AlertDialogAction
+              onClick={handleDeleteAgent}
+              disabled={deleteAgentMutation.isPending}
+              className="bg-red-600 hover:bg-red-700"
+            >
+              {deleteAgentMutation.isPending ? "Deleting..." : "Delete"}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
+      {/* Welcome Text Modal */}
+      <Dialog open={showWelcomeTextModal} onOpenChange={setShowWelcomeTextModal}>
+        <DialogContent className="bg-slate-800 border-slate-700 text-white max-w-2xl max-h-[80vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <Send className="w-5 h-5 text-blue-400" />
+              Agent Welcome Text
+            </DialogTitle>
+            <DialogDescription className="text-slate-300">
+              Copy this text and send it to your agent via text message or email
+            </DialogDescription>
+          </DialogHeader>
+          
+          <div className="bg-slate-900 border border-slate-700 rounded-lg p-4 my-4 font-mono text-sm whitespace-pre-wrap break-words text-slate-100 max-h-96 overflow-y-auto">
+            {welcomeTextContent}
+          </div>
+          
+          <DialogFooter>
+            <Button
+              variant="outline"
+              onClick={() => setShowWelcomeTextModal(false)}
+              className="border-slate-600 text-slate-300 hover:bg-slate-700"
+            >
+              Close
+            </Button>
+            <Button
+              onClick={handleCopyWelcomeTextFromModal}
+              className="bg-blue-600 hover:bg-blue-700 gap-2"
+            >
+              {copiedWelcomeText ? (
+                <>
+                  <CheckCircle className="w-4 h-4" />
+                  Copied!
+                </>
+              ) : (
+                <>
+                  <Copy className="w-4 h-4" />
+                  Copy to Clipboard
+                </>
+              )}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    </div>
+  );
+}

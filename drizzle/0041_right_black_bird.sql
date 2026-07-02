@@ -1,0 +1,21 @@
+CREATE TABLE `agent_onboarding_progress` (
+	`id` int AUTO_INCREMENT NOT NULL,
+	`agentId` int NOT NULL,
+	`beforeYouStartCompleted` tinyint DEFAULT 0,
+	`step1HcmsInviteSent` tinyint DEFAULT 0,
+	`step1HcmsInviteCompletedAt` bigint,
+	`step2EmailSequenceCompleted` tinyint DEFAULT 0,
+	`step2EmailSequenceCompletedAt` bigint,
+	`step2SureLcCompleted` tinyint DEFAULT 0,
+	`step2SureLcCompletedAt` bigint,
+	`step3NlcContractsSubmitted` tinyint DEFAULT 0,
+	`step3NlcContractsSubmittedAt` bigint,
+	`step4AdditionalContractsSent` tinyint DEFAULT 0,
+	`step4AdditionalContractsSentAt` bigint,
+	`onboardingCompleted` tinyint DEFAULT 0,
+	`onboardingCompletedAt` bigint,
+	`createdAt` timestamp NOT NULL DEFAULT (now()),
+	`updatedAt` timestamp NOT NULL DEFAULT (now()) ON UPDATE CURRENT_TIMESTAMP,
+	CONSTRAINT `agent_onboarding_progress_id` PRIMARY KEY(`id`),
+	CONSTRAINT `agent_onboarding_progress_agentId_unique` UNIQUE(`agentId`)
+);

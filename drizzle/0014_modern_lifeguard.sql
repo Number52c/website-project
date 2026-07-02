@@ -1,0 +1,1 @@
+ALTER TABLE `carriers` ADD `website` text;

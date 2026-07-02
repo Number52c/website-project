@@ -1,0 +1,25 @@
+{
+  "importName": "Carrier Policy Import - June 2026",
+  "sourceRecordCount": 106,
+  "importDate": "2026-06-26",
+  "description": "Import of real book of business from 6 carriers: American Equity, Americo, Corebridge, Athene, ELCO Life, ELCO Annuity",
+  "expected": {
+    "activePolicies": 90,
+    "futureDatedPolicies": 4,
+    "pendingApplications": 8,
+    "excludedRecords": 4,
+    "salesEntryCount": 38,
+    "productionTotal": "3800500.00"
+  },
+  "chunks": [
+    "records-001.json",
+    "records-002.json",
+    "records-003.json",
+    "records-004.json",
+    "records-005.json",
+    "records-006.json",
+    "records-007.json",
+    "records-008.json"
+  ],
+  "notes": "All sensitive client data (names, DOBs, addresses, beneficiaries, policy numbers, premiums, values, SSNs, bank info) remains private/admin-only. Attachments stored securely. No public exposure."
+}
