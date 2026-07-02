@@ -1,0 +1,27 @@
+{
+  "include": ["server", "shared"],
+  "exclude": ["node_modules", "build", "dist", "**/*.test.ts", "client", "vite.config.ts"],
+  "compilerOptions": {
+    "moduleResolution": "bundler",
+    "module": "ESNext",
+    "target": "ES2020",
+    "outDir": "./dist",
+    "rootDir": ".",
+    "allowImportingTsExtensions": false,
+    "rewriteRelativeImportExtensions": true,
+    "incremental": false,
+    "noEmit": false,
+    "strict": false,
+    "lib": ["ES2020"],
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "noImplicitAny": false,
+    "strictNullChecks": false,
+    "resolveJsonModule": true,
+    "declaration": false,
+    "baseUrl": ".",
+    "paths": {
+      "@shared/*": ["./shared/*"]
+    }
+  }
+}
